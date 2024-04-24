@@ -1,0 +1,73 @@
+version: '3.8'
+services:
+
+# Service for the api gateway
+  sr-api-gateway:
+    container_name: api-gateway
+    build:
+      context: ./sr-vecinet-api-gateway
+      dockerfile: Dockerfile
+    env_file: ./vecinet-envs/sr-vecinet-api-gateway/local/compose.env
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./sr-vecinet-api-gateway:/app
+      - gradle-cache:/home/gradle/.gradle
+    networks:
+      - venet
+
+# Service for the auth api
+  ms-auth:
+    container_name: ms-auth
+    build:
+      context: ./ms-vecinet-auth
+      dockerfile: Dockerfile
+    env_file: ./vecinet-envs/ms-vecinet-auth/local/.env
+    ports:
+      - "8092:8092"
+    volumes:
+      - ./ms-vecinet-auth:/app
+      - gradle-cache:/home/gradle/.gradle
+    networks:
+      - venet
+
+# Service for the worker
+  worker:
+    container_name: ms-worker
+    build:
+      context: ./ms-vecinet-create-post-worker
+      dockerfile: Dockerfile
+    ports:
+      - "8082:8082"
+    env_file: ./vecinet-envs/ms-vecinet-create-post-worker/local/compose.env
+    volumes:
+      - ./ms-vecinet-create-post-worker:/app
+      - gradle-cache:/home/gradle/.gradle
+    networks:
+      - venet
+
+ 
+ # Service for the worker
+  ms-vecinet-post-api:
+    container_name: ms-post
+    build:
+      context: ./ms-vecinet-post-api
+      dockerfile: Dockerfile
+    ports:
+      - "8093:8093"
+    env_file: ./vecinet-envs/ms-vecinet-post-api/local/compose.env
+    volumes:
+      - ./ms-vecinet-post-api:/app
+      - gradle-cache:/home/gradle/.gradle
+    networks:
+      - venet
+
+
+
+
+networks:
+  venet:
+    driver: bridge
+    external: true
+volumes:
+  gradle-cache:
