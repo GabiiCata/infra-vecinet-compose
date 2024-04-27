@@ -17,9 +17,9 @@ services:
   ms-auth:
     container_name: ms-auth
     build:
-      context: ./ms-vecinet-auth
+      context: ./ms-vecinet-auth-api
       dockerfile: Dockerfile
-    env_file: ./vecinet-envs/ms-vecinet-auth/local/.env
+    env_file: ./vecinet-envs/ms-vecinet-auth-api/local/.env
     ports:
       - "8092:8092"
     volumes:
