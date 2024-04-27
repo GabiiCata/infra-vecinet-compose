@@ -19,7 +19,7 @@ services:
     build:
       context: ./ms-vecinet-auth-api
       dockerfile: Dockerfile
-    env_file: ./vecinet-envs/ms-vecinet-auth-api/local/.env
+    env_file: ./vecinet-envs/ms-vecinet-auth/local/.env
     ports:
       - "8092:8092"
     volumes:
